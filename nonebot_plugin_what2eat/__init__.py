@@ -307,6 +307,6 @@ async def time_for_dinner():
 
 
 # 夜宵提醒
-@scheduler.scheduled_job("cron", hour=24, minute=0, misfire_grace_time=60)
+@scheduler.scheduled_job("cron", hour=0, minute=0, misfire_grace_time=60)
 async def time_for_midnight():
     await eating_manager.do_greeting(Meals.MIDNIGHT)
