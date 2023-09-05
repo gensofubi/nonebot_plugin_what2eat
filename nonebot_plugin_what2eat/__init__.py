@@ -4,7 +4,7 @@ from nonebot.plugin import PluginMetadata
 from nonebot.typing import T_State
 from nonebot.permission import SUPERUSER
 from nonebot.adapters.onebot.v11 import Bot, GROUP, GROUP_ADMIN, GROUP_OWNER, Message, MessageEvent, MessageSegment, GroupMessageEvent
-from nonebot.params import Depends, Arg, ArgStr, CommandArg, RegexMatched
+from nonebot.params import Depends, Arg, ArgStr, CommandArg, RegexStr
 from nonebot.matcher import Matcher
 from .utils import Meals, save_cq_image
 from .data_source import eating_manager
@@ -50,7 +50,7 @@ remove_greeting = on_command("删除问候", aliases={"删除问候语", "移除
 
 
 @what2eat.handle()
-async def _(event: MessageEvent, args: str = RegexMatched()):
+async def _(event: MessageEvent, args: str = RegexStr()):
     if args[-2:] == "帮助":
         await what2eat.finish(__what2eat_usages__)
 
@@ -59,7 +59,7 @@ async def _(event: MessageEvent, args: str = RegexMatched()):
 
 
 @what2drink.handle()
-async def _(event: MessageEvent, args: str = RegexMatched()):
+async def _(event: MessageEvent, args: str = RegexStr()):
     if args[-2:] == "帮助":
         await what2drink.finish(__what2eat_usages__)
 
@@ -291,14 +291,14 @@ async def time_for_snack():
 
 
 # 晚餐提醒
-@scheduler.scheduled_job("cron", hour=18, minute=0, misfire_grace_time=60)
+@scheduler.scheduled_job("cron", hour=20, minute=0, misfire_grace_time=60)
 async def time_for_dinner():
     await eating_manager.do_greeting(Meals.DINNER)
     logger.info(f"已群发晚餐提醒")
 
 
 # 夜宵提醒
-@scheduler.scheduled_job("cron", hour=22, minute=0, misfire_grace_time=60)
+@scheduler.scheduled_job("cron", hour=24, minute=0, misfire_grace_time=60)
 async def time_for_midnight():
     await eating_manager.do_greeting(Meals.MIDNIGHT)
     logger.info(f"已群发夜宵提醒")
